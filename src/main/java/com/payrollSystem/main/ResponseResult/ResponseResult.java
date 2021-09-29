@@ -11,11 +11,15 @@ public class ResponseResult {
     //content返回值
     private Object content;
 
-    public static ResponseResult success(Object obj){
-        return new ResponseResult(200,obj);
+    public static ResponseResult success(Object obj) {
+        return new ResponseResult(200, obj);
     }
 
-    public static ResponseResult error(String msg){
-        return new ResponseResult(500,msg);
+    public static ResponseResult error(String msg) {
+        return new ResponseResult(500, msg);
+    }
+
+    public static ResponseResult newStatus(int status, String msg) {
+        return new ResponseResult(status, msg);
     }
 }
