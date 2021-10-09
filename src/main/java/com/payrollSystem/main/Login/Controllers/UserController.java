@@ -1,17 +1,18 @@
 package com.payrollSystem.main.Login.Controllers;
 
 
-import com.payrollSystem.main.Login.Mappers.UserMapper;
+import com.alibaba.fastjson.JSONObject;
+import com.payrollSystem.main.Login.Entity.EmployeeVO;
 import com.payrollSystem.main.Login.Service.UserService;
 import com.payrollSystem.main.ResponseResult.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -38,7 +39,49 @@ public class UserController {
             log.error(e.getMessage());
         }
         return result;
-
     }
+
+    @ResponseBody
+    @PostMapping(value = "/apis/employee/insert")
+    public ResponseResult InsertEmployee(@RequestParam(name = "jsonString") String jsonString) {
+        ResponseResult result = null;
+        try {
+            EmployeeVO employeeVO = JSONObject.parseObject(jsonString, EmployeeVO.class);
+            userService.insertEmployee(employeeVO);
+            result = ResponseResult.success("插入成功");
+        } catch (Exception e) {
+            result = ResponseResult.error(e.getMessage());
+            log.error(e.getMessage());
+        }
+        return result;
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/selectEmployee")
+    public ResponseResult selectEmployee(int eid) {
+        ResponseResult result = null;
+        try {
+            result = ResponseResult.success(userService.selectEmployee(eid));
+        } catch (Exception e) {
+            result = ResponseResult.error(e.getMessage());
+            log.error(e.getMessage());
+        }
+        return result;
+    }
+
+    @ResponseBody
+    @GetMapping(value = "updateEmployee")
+    public ResponseResult updateEmployee(@RequestParam(name = "jsonString") String jsonString) {
+        ResponseResult result = null;
+        try {
+            int count = userService.updateEmployee(jsonString);
+            result = ResponseResult.success("修改成功，共修改" + count + "行");
+        } catch (Exception e) {
+            result = ResponseResult.error(e.getMessage());
+            log.error(e.getMessage());
+        }
+        return result;
+    }
+
 
 }
