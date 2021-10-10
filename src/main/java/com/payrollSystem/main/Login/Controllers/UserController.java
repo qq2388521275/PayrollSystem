@@ -57,11 +57,11 @@ public class UserController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/selectEmployee")
-    public ResponseResult selectEmployee(int eid) {
+    @GetMapping(value = "/apis/employee/queryAll")
+    public ResponseResult selectEmployee() {
         ResponseResult result = null;
         try {
-            result = ResponseResult.success(userService.selectEmployee(eid));
+            result = ResponseResult.success(userService.selectEmployees());
         } catch (Exception e) {
             result = ResponseResult.error(e.getMessage());
             log.error(e.getMessage());
@@ -70,7 +70,25 @@ public class UserController {
     }
 
     @ResponseBody
-    @GetMapping(value = "updateEmployee")
+    @GetMapping(value = "/apis/employee/delete")
+    public ResponseResult deleteEmployee(@RequestParam(name = "eid")String eid) {
+        ResponseResult result = null;
+        try{
+            int res = userService.deleteEmployee(eid);
+            if (res > 0){
+                result = ResponseResult.success("删除成功");
+            } else {
+                result = ResponseResult.newStatus(5001,"删除失败未找到有效信息");
+            }
+        } catch (Exception e) {
+            result = ResponseResult.error(e.getMessage());
+            log.error(e.getMessage());
+        }
+        return result;
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/apis/employee/update")
     public ResponseResult updateEmployee(@RequestParam(name = "jsonString") String jsonString) {
         ResponseResult result = null;
         try {

@@ -53,7 +53,7 @@ public class EmployeeVO {
     /**
      * 标准税收减免
      */
-    private int tex_remisstion;
+    private int tex_remission;
 
     /**
      * 工资
