@@ -44,4 +44,36 @@ public interface UserMapper {
 
     @Update("UPDATE employee SET status=0 WHERE status=1 AND eid=#{eid}")
     int deleteEmployee(String eid);
+
+    @Select("select paytype from employee where eid=#{eid} and status=1")
+    @Result(property = "paytype",column = "paytype")
+    String selectPaytype(String eid);
+
+    @Select("select hoursalary from employee where eid=#{eid} and status=1")
+    @Result(property = "hoursalary",column = "hoursalary")
+    int getHourSalary(String eid);
+
+    @Select("SELECT * from employee where eid=#{eid} and status=1")
+    @Results({
+            @Result(property = "eid",column = "eid"),
+            @Result(property = "paytype",column = "paytype"),
+            @Result(property = "salaryway",column = "salaryway"),
+            @Result(property = "ename",column = "ename"),
+            @Result(property = "esex",column = "esex"),
+            @Result(property = "eposition",column = "eposition"),
+            @Result(property = "department",column = "department"),
+            @Result(property = "phonenumber",column = "phonenumber"),
+            @Result(property = "email",column = "email"),
+            @Result(property = "tex_remission",column = "text_remisstion"),
+            @Result(property = "salary",column = "salary"),
+            @Result(property = "salaryrate",column = "salaryrate"),
+            @Result(property = "hoursalary",column = "hoursalary"),
+            @Result(property = "timelimit",column = "timelimit"),
+            @Result(property = "vacation_day",column = "vacation_day"),
+            @Result(property = "password",column = "password"),
+    })
+    EmployeeVO selectEmployee(String eid);
+
+    @Select("select ename from employee where eid=#{eid} and status=1")
+    String selectName(String eid);
 }

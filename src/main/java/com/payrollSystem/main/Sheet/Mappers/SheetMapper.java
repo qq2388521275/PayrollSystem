@@ -1,6 +1,7 @@
 package com.payrollSystem.main.Sheet.Mappers;
 
 
+import com.payrollSystem.main.Salary.Entity.WorkTimeDO;
 import com.payrollSystem.main.Sheet.Entity.SheetDO;
 import com.payrollSystem.main.Sheet.Entity.SheetVO;
 import org.apache.ibatis.annotations.*;
@@ -47,6 +48,14 @@ public interface SheetMapper {
     @Insert("Insert INTO attendancecard (eid,workstart,workend,weekday,date,commit) VALUES (#{eid},#{workstart},#{workend},#{weekday},#{now},#{commit})")
     int addToSheet(String eid, String workstart, String workend, int weekday, Date now, int commit);
 
-    @Update("UPDATE attendancecard SET workstart=#{workstart},workend=#{workend},commit=#{commit} WHERE aid=#{aid}")
+    @Update("UPDATE attendancecard SET workstart=#{workstart},workend=#{workend},commit=#{commit} WHERE aid=#{aid} and status=1")
     int updateSheet(int aid, String workstart, String workend, int commit);
+
+    @Select("select workstart,workend from attendancecard where eid=#{eid} and date=#{date} and status=1")
+    @Results({
+            @Result(property = "workstart",column = "workstart"),
+            @Result(property = "workend",column = "workend"),
+            @Result(property = "worktime",column = "worktime")
+    })
+    WorkTimeDO selectTime(String eid, Date date);
 }
